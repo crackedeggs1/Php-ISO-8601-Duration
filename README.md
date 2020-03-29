@@ -19,24 +19,20 @@ If the string is not valid a ISO 8601 duration, an exception will be thrown.
 Access the object's properties as needed to do your math, display the duration, or whatever:
 
 Example:
-========
-$duration = new My_DateInterval('P12YT13H3.267923S');
+<code>$duration = new My_DateInterval('P12YT13H3.267923S');
 // yields
 // $duration->y 12
 // $duration->h 13
 // $duration->s 3
-// $duration->f 267923
-========
+// $duration->f 267923</code>
 
 If you want to go the other direction, start with an empty object and set the properties manually:
 
 Example:
-========
-$duration = new My_DateInterval();
+<code>$duration = new My_DateInterval();
 $duration->y = 12.5;
 $duration->h = 13.25;
 $duration->s = 3;
 $duration->f = 267923;
 echo $duration->value();
-// yields P12Y6MT13H15M3.267923S
-========
+// yields P12Y6MT13H15M3.267923S</code>
