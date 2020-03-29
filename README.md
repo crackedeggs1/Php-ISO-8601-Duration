@@ -24,7 +24,8 @@ Example:
 // $duration->y 12
 // $duration->h 13
 // $duration->s 3
-// $duration->f 267923```
+// $duration->f 267923
+```
 
 If you want to go the other direction, start with an empty object and set the properties manually:
 
@@ -35,4 +36,5 @@ $duration->h = 13.25;
 $duration->s = 3;
 $duration->f = 267923;
 echo $duration->value();
-// yields P12Y6MT13H15M3.267923S```
+// yields P12Y6MT13H15M3.267923S
+```
