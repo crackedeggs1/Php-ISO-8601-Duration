@@ -7,7 +7,6 @@ If you need negative support, P[n]W support, or alternative formats you will nee
 When I wrote this I only needed one format.
 
 When using this class, I recommend renaming it to something more suitable for your project.
-#
 
 Usage:
 ======
@@ -19,7 +18,8 @@ If the string is not valid a ISO 8601 duration, an exception will be thrown.
 Access the object's properties as needed to do your math, display the duration, or whatever:
 
 Example:
-```$duration = new My_DateInterval('P12YT13H3.267923S');
+```
+$duration = new My_DateInterval('P12YT13H3.267923S');
 // yields
 // $duration->y 12
 // $duration->h 13
@@ -30,7 +30,8 @@ Example:
 If you want to go the other direction, start with an empty object and set the properties manually:
 
 Example:
-```$duration = new My_DateInterval();
+```
+$duration = new My_DateInterval();
 $duration->y = 12.5;
 $duration->h = 13.25;
 $duration->s = 3;
