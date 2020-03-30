@@ -2,9 +2,10 @@
 A basic ISO 8601 Duration parser and formatter that supports decimal input and output.
 
 This class was created because PHP's built-in DateInterval failed to parse ISO-8601 strings
-containing decimals. My_DateInterval can parse and output P[n]Y[n]M[n]DT[n]H[n]M[n]S format only.
-If you need negative support, P[n]W support, or alternative formats you will need to modify the class.
-When I wrote this I only needed one format.
+containing decimals. My_DateInterval can parse and output P[n]Y[n]M[n]DT[n]H[n]M[n]S format,
+including negative values. It can handle P[n]W, but if you set any other properties, weeks
+are converted to days at 7 days = 1 week. If you need alternative formats you will need to
+modify the class.
 
 When using this class, I recommend renaming it to something more suitable for your project.
 
