@@ -20,6 +20,8 @@ class My_DateInterval
 
 	public $f = 0;
 
+	public $negate = false;
+
 	public function __construct($iso = 'PT0S')
 	{
 		$this->parse_iso($iso);
@@ -50,6 +52,50 @@ class My_DateInterval
 	public function value()
 	{
 		$iso = '';
+
+		// if all entries are negative:
+		// if the iso is negative, make everything positive
+		// if the iso is positive, make the iso negative and entries positive
+
+		$count = 0;
+		$swap = 0;
+		$all = array('y', 'm', 'd', 'h', 'i', 's', 'w', 'f');
+
+		foreach ($all AS $p)
+		{
+			if ($this->$p)
+			{
+				$count++;
+			}
+
+			if ($this->negate)
+			{
+				if ($this->$p < 0)
+				{
+					$swap++;
+				}
+			}
+			else if ($this->$p < 0)
+			{
+				$swap++;
+			}
+		}
+
+		if ($swap == $count)
+		{
+			foreach ($all AS $p)
+			{
+				$this->$p *= -1;
+			}
+
+			$this->negate = !$this->negate;
+		}
+
+		if ($this->negate)
+		{
+			$iso .= '-';
+		}
+
 		$iso .= 'P';
 
 		$date = array();
@@ -158,6 +204,12 @@ class My_DateInterval
 	protected function parse_iso($iso)
 	{
 		$p = substr($iso, 0, 1);
+
+		if ($p AND $p == '-')
+		{
+			$this->negate = true;
+			$p = substr($iso, 1, 1);
+		}
 
 		if (!$p OR $p != 'P')
 		{
