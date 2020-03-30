@@ -20,6 +20,8 @@ class My_DateInterval
 
 	public $f = 0;
 
+	public $w = 0;
+
 	public $negate = false;
 
 	public function __construct($iso = 'PT0S')
@@ -116,6 +118,20 @@ class My_DateInterval
 			}
 		}
 
+		if ($this->w AND $last)
+		{
+			$this->d += $this->w * 7;
+			$this->w = 0;
+
+			switch ($last)
+			{
+				case 'y':
+				case 'm':
+					$last = 'd';
+					break;
+			}
+		}
+
 		foreach (array(
 			'y' => array('m', 12),
 			'm' => array('d', 30),
@@ -161,6 +177,13 @@ class My_DateInterval
 
 		$n = false;
 		$this->push('Y', $y, $n, false, $date);
+
+		if (!$date AND !$time AND $this->w)
+		{
+			$w = round($this->w, 6) + 0;
+			$date[] = $w . 'W';
+		}
+
 		$iso .= implode('', $date);
 
 		if ($time)
