@@ -14,7 +14,7 @@ Usage:
 When you have a suspected ISO 8601 string, pass it into the constructor.
 The new object will have the $y, $m, $d etc properties automatically populated,
 with the special $f added for microseconds (for similarity to PHP's DateInterval).
-If the string is not valid a ISO 8601 duration, an exception will be thrown.
+If the string is not a valid ISO 8601 duration, an exception will be thrown.
 
 Access the object's properties as needed to do your math, display the duration, or whatever:
 
