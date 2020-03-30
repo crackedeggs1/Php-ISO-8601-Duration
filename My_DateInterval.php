@@ -25,13 +25,18 @@ class My_DateInterval
 		$this->parse_iso($iso);
 	}
 
-	protected function part($delim, $prop, $nextprop, $factor, $last)
+	protected function part($prop, $nextprop, $factor, $last)
 	{
 		if ($last != $prop)
 		{
 			$y = intval($this->$prop);
 
-			if ($y != $this->$prop)
+			if ($y == $this->$prop)
+			{
+				// use the int
+				return $y;
+			}
+			else
 			{
 				$coef = $this->$prop - $y;
 				$this->$prop = $y;
@@ -39,9 +44,7 @@ class My_DateInterval
 			}
 		}
 
-		$y = round($this->$prop, 6) + 0;
-
-		return $y . $delim;
+		return round($this->$prop, 6) + 0;
 	}
 
 	public function value()
@@ -52,6 +55,13 @@ class My_DateInterval
 		$date = array();
 		$time = array();
 
+		$y = 0;
+		$m = 0;
+		$d = 0;
+		$h = 0;
+		$i = 0;
+		$s = 0;
+
 		foreach (array('y', 'm', 'd', 'h', 'i', 's') AS $p)
 		{
 			if ($this->$p)
@@ -60,29 +70,18 @@ class My_DateInterval
 			}
 		}
 
-		if ($this->y)
+		foreach (array(
+			'y' => array('m', 12),
+			'm' => array('d', 30),
+			'd' => array('h', 24),
+			'h' => array('i', 60),
+			'i' => array('s', 60)
+		) AS $p => $pi)
 		{
-			$date[] = $this->part('Y', 'y', 'm', 12, $last);
-		}
-
-		if ($this->m)
-		{
-			$date[] = $this->part('M', 'm', 'd', 30, $last);
-		}
-
-		if ($this->d)
-		{
-			$date[] = $this->part('D', 'd', 'h', 24, $last);
-		}
-
-		if ($this->h)
-		{
-			$time[] = $this->part('H', 'h', 'i', 60, $last);
-		}
-
-		if ($this->i)
-		{
-			$time[] = $this->part('M', 'i', 's', 60, $last);
+			if ($this->$p)
+			{
+				$$p = $this->part($p, $pi[0], $pi[1], $last);
+			}
 		}
 
 		$s = $this->s;
@@ -95,9 +94,27 @@ class My_DateInterval
 		if ($s)
 		{
 			$s = round($s, 6) + 0;
-			$time[] = $s . 'S';
 		}
 
+		foreach (array(
+			's' => array('S', 'i', 60),
+			'i' => array('M', 'h', 60),
+			'h' => array('H', 'd', 24)
+		) AS $v => $vi)
+		{
+			$this->push($vi[0], $$v, ${$vi[1]}, $vi[2], $time);
+		}
+
+		foreach (array(
+			'd' => array('D', 'm', 30),
+			'm' => array('M', 'y', 12),
+		) AS $v => $vi)
+		{
+			$this->push($vi[0], $$v, ${$vi[1]}, $vi[2], $date);
+		}
+
+		$n = false;
+		$this->push('Y', $y, $n, false, $date);
 		$iso .= implode('', $date);
 
 		if ($time)
@@ -112,6 +129,25 @@ class My_DateInterval
 		}
 
 		return $iso;
+	}
+
+	protected function push($delim, &$val, &$nextval, $coef, &$arr)
+	{
+		if ($val)
+		{
+			if ($nextval AND $coef)
+			{
+				$floor = floor($val / $coef);
+
+				if ($floor)
+				{
+					$val -= $floor * $coef;
+					$nextval += $floor;
+				}
+			}
+
+			array_unshift($arr, $val . $delim);
+		}
 	}
 
 	protected function exception($iso)
