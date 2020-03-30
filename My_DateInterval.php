@@ -178,7 +178,7 @@ class My_DateInterval
 				}
 
 				/** @var array $m */
-				if (preg_match('/^(\d+(?:[\.\,]\d+)?)' . $k . '/', $parts[0], $m))
+				if (preg_match('/^(\-?\d+(?:[\.\,]\d+)?)' . $k . '/', $parts[0], $m))
 				{
 					$units[strtolower($k)] = str_replace(',', '.', $m[1]);
 					$parts[0] = substr($parts[0], strlen($m[0]));
@@ -206,7 +206,7 @@ class My_DateInterval
 				}
 
 				/** @var array $m */
-				if (preg_match('/^(\d+(?:[\.\,]\d+)?)' . $k . '/', $parts[1], $m))
+				if (preg_match('/^(\-?\d+(?:[\.\,]\d+)?)' . $k . '/', $parts[1], $m))
 				{
 					if ($k == 'M')
 					{
